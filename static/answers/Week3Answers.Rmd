@@ -1,0 +1,320 @@
+---
+title: "STA 326 2.0 Programming and Data Analysis with R ^[All rights reserved by Thiyanga S. Talagala]"
+subtitle: "Exploring `iris` dataset with `qplot`"
+toc: TRUE
+geometry: "left=3cm,right=3cm,top=2cm,bottom=2cm"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
+```
+
+\newpage
+
+# Stage 1:  Planning your analysis
+
+## Step 1: Dataset overview and description
+
+Before we get started let's look at the data and plan a analysis.
+
+**Load iris dataset**
+```{r, comment=NA}
+data(iris)
+```
+
+Here is a glimpse of the dataset.
+
+```{r, comment=NA}
+head(iris)
+```
+
+We have four quantitative variables: `r colnames(iris)[1:4]` and one qualitative variable: `r colnames(iris)[5]`
+
+## Step 2: One-way analysis
+
+Let's look at the graphs we could use to explore variables one by one.
+
+Plots that could be used to to summarize qualitative variables
+
+  - Bar chart
+
+  - Pie chart
+
+Plots that could be used to to summarize quantitative variables
+
+  - Box and whisker plot
+
+  - Histograms
+
+  - Dot plots 
+
+  - Density plot
+  
+  - Stem and leaf displays
+  
+Note: Stem and leaf displays are best-suited for small to moderate datasets, whereas others such as histograms and Box and whisker plots are best-suited for large datasets. Box and whisker plots and histograms are also good at depicting differences between distributions and identifying outliers.
+
+
+## Step 3: Two-way analysis
+
+Next, we will look at two variables at a time.
+
+- Quantitative vs Quantitative: Scatter plots
+
+- Quantitative vs Qualitative: Box plots/ Histograms/ Dot plots/ Density plots with groups allow us to compare across different levels of the qualitative variable. **Faceting** can be used to generate the same plot for different levels of the qualitative variable.
+
+## Step 4: Three-way analysis
+
+Now, let's look at three variables at a time.
+
+- Two quantitative variables and one qualitative variable: Scatter plot with different markers  (eg: size, shapes, colours) for different levels of the qualitative variable.
+
+# Stage 2: Getting started with `qplot()` in the ggplot2 package.
+
+Now we are going to use the `qplot` function to make some quick plots. This section demonstrates how different graphs can be plotted for various purposes using the `qplot`.
+
+## Recap: some important arguments in `qplot`
+
+
+```r
+qplot(
+  x, # X variable
+  y, # Y variable
+  data, # name of the dataframe
+  facets = NULL, 
+  margins = FALSE,
+  geom = "auto",
+  xlim = c(NA, NA), # numeric vector of length 2 giving the x coordinates
+  ylim = c(NA, NA), # numeric vector of length 2 giving the 7 coordinates
+  log = "",
+  main = NULL, # Figure title
+  xlab = NULL, # X-axis title
+  ylab = NULL, # Y-axis title
+  asp = NA,
+  stat = NULL,
+  position = NULL,
+)
+
+```
+
+
+\newpage
+   
+## One-way analysis
+
+### Load packages
+
+```{r}
+library(ggplot2)
+```
+
+### 1. Summarizing qualitative variables
+
+```{r, fig.cap="Composition of the sample", fig.width=3, fig.height=3, fig.pos="H", comment=NA}
+qplot(x = Species, data = iris, geom = "bar", ylab = "Count",
+      main = "Composition of Species")
+```
+
+\newpage
+
+### 2. Summarizing quantitative variables
+
+Here, I have drawn plots only for `Sepal.Width`. Please take suitable graphs for other quantitative variables in the iris dataset.
+
+#### Histogram
+
+```{r, fig.cap="Histogram of sepal width", fig.width=3, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Width, data = iris, geom = "histogram")
+```
+
+#### Density plot
+
+```{r, fig.cap="Density plot of sepal width", fig.width=3, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Width, data = iris, geom = "density")
+```
+
+\newpage
+
+#### Box and whisker plot
+
+```{r, fig.cap="Boxplot of sepal width", fig.width=3, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(y = Sepal.Width, data = iris, geom = "boxplot")
+```
+
+## Two-way analysis
+
+### 1. Visualizing two qualitative variables at a time
+
+```{r, fig.cap="Scatterplot of sepal length and sepal width", fig.width=3, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Length, y = Sepal.Width, data = iris, geom = "point")
+```
+
+\newpage
+
+### 2. Visualizing qualitative and quantitative variables
+
+```{r, fig.cap="Boxplot of sepal width by species", fig.width=3, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Species, y = Sepal.Width, data = iris, geom = "boxplot")
+```
+
+#### Different ways to modify your graph
+
+```{r, fig.cap="Boxplot of sepal width by species", fig.width=4, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Species, y = Sepal.Width, data = iris, geom = "boxplot", fill = Species)
+```
+
+\newpage
+
+```{r, fig.cap="Boxplot of sepal width by species", fig.width=4, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Species, y = Sepal.Width, data = iris, geom = c("point","jitter","boxplot"), 
+      alpha = 0.5, colour = Species)
+```
+
+```{r, fig.cap="Histogram of sepal width", fig.width=4, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Width, data = iris, geom = c("histogram"), 
+     colour = Species)
+```
+
+\newpage
+
+```{r, fig.cap="Histogram of sepal width", fig.width=4, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Width, data = iris, geom = c("histogram"), 
+     fill = Species)
+```
+
+
+```{r, fig.cap="Density plot of sepal width", fig.width=4, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Width, data = iris, geom = c("density"), 
+     colour = Species)
+```
+
+\newpage
+
+## Three-way analysis
+
+**Everything on a single panel**
+
+```{r, fig.cap="Scatterplot of sepal length and sepal width by species", fig.width=4, fig.height=3, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Length, y = Sepal.Width, data = iris, 
+      geom = "point", color = Species)
+```
+
+
+**Separate panels for each species: column-wise**
+
+```{r, fig.cap="Scatterplot of sepal length and sepal width by species", fig.width=4, fig.height=2, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Length, y = Sepal.Width, 
+      facets = .~Species, data = iris, geom = "point") 
+```
+
+\newpage
+
+**Separate panels for each species: row-wise**
+
+```{r, fig.cap="Scatterplot of sepal length and sepal width by species", fig.width=4, fig.height=4, fig.pos="H", message=FALSE, comment=NA, warning=FALSE}
+qplot(x = Sepal.Length, y = Sepal.Width, 
+      facets = Species~., data = iris, geom = "point")
+```
+
+
+\newpage
+
+# `patchwork` package in R
+
+```{r, comment=NA}
+library(patchwork) 
+```
+
+
+First you need to assign a name for each graph. Here, I use `q1` and `q2`.
+
+```{r, fig.cap="Composition of species", fig.width=8, fig.height=4, fig.pos="H", comment=NA,fig.pos="H"}
+q1 <- qplot(x = Species, y = Sepal.Width, data = iris, geom = c("jitter","boxplot"), 
+      alpha = 0.5, colour = Species, main = "Distribution of Sepal.Width") + geom_boxplot(outlier.size = NA) 
+q2 <- qplot(x = Species, y = Sepal.Length, data = iris, geom = c("jitter","boxplot"), 
+      alpha = 0.5, colour = Species, main = "Distribution of Sepal.Length") + geom_boxplot(outlier.size = NA) 
+```
+
+
+## Arrange multiple graphs row-wise use "/"
+
+```{r, fig.cap="Arrange multiple graphs row-wise",fig.pos="H"}
+q1/q2
+
+```
+
+\newpage
+
+## Arrange multiple graphs column-wise: use "|"
+
+```{r, fig.cap="Arrange multiple graphs column-wise",fig.pos="H"}
+q1|q2
+```
+
+
+
+\newpage
+
+## Arrange multiple graphs both row-wise and column-wise
+
+```{r, fig.cap="Arrange multiple graphs both row-wise and column-wise" ,fig.pos="H"}
+(q1|q2)/(q1|q2)
+
+```
+
+\newpage
+
+# Stage 3: Final analysis
+
+You do not need to include all the graphs to your final analysis. Please select only the useful graphs which help you to tell the story in your dataset. Here is mine.
+
+## 1. Composition of the sample
+
+
+```{r, fig.cap="Composition of the sample", fig.width=5, fig.height=3, fig.pos="H", comment=NA}
+qplot(x = Species, data = iris, geom = "bar", ylab = "Count", 
+      colour = Species, fill = Species,
+      main = "Composition of Species")
+```
+
+
+\newpage
+
+## 2. Distribution of the features of sepal and petal by species
+
+```{r, fig.cap="Distribution of features related to sepal and petal by species", fig.width=8, fig.height=6, fig.pos="H", comment=NA}
+q1 <- qplot(x = Species, y = Sepal.Width, data = iris, geom = c("jitter","boxplot"), 
+      alpha = 0.5, colour = Species, main = "(a) Distribution of Sepal Width") + geom_boxplot(outlier.size = NA) 
+q2 <- qplot(x = Species, y = Sepal.Length, data = iris, geom = c("jitter","boxplot"), 
+      alpha = 0.5, colour = Species, main = "(b) Distribution of Sepal Length") + geom_boxplot(outlier.size = NA) 
+q3 <- qplot(x = Species, y = Petal.Width, data = iris, geom = c("jitter","boxplot"), 
+      alpha = 0.5, colour = Species, main = "(c) Distribution of Petal Width") + geom_boxplot(outlier.size = NA) 
+q4 <- qplot(x = Species, y = Petal.Length, data = iris, geom = c("jitter","boxplot"), 
+      alpha = 0.5, colour = Species, main = "(d) Distribution of Petal Length") + geom_boxplot(outlier.size = NA) 
+(q1|q2)/(q3|q4)
+```
+
+\newpage
+
+## 3. Relationship between features of sepal and petal by species
+
+```{r, fig.cap="Relationship between features of sepal and petal by species", fig.width=8, fig.height=6, fig.pos="H", comment=NA}
+p1 <- qplot(x = Sepal.Length, y = Sepal.Width, data = iris, geom = c("point","jitter"), 
+      alpha = 0.5, colour = Species, 
+      main="(a) Sepal Length and Sepal Width")
+p2 <- qplot(x = Petal.Length, y = Petal.Width, data = iris, geom = c("point","jitter"), 
+      alpha = 0.5, colour = Species, 
+      main = "(b) Petal Length and Petal Width")
+p3 <- qplot(x = Sepal.Length, y = Petal.Length, data = iris, geom = c("point","jitter"), 
+      alpha = 0.5, colour = Species, 
+      main = "(c) Sepal Length and Petal Length")
+p4 <- qplot(x = Sepal.Length, y = Petal.Width, data = iris, geom = c("point","jitter"), 
+      alpha = 0.5, colour = Species, 
+      main = "(d) Sepal length and Petal Width")
+(p1|p2)/(p3|p4)
+```
+
+**Note: Interpret all figures in your final analysis.**
