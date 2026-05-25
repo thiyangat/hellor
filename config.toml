@@ -1,4 +1,4 @@
-baseurl = "https://hellor.netlify.app/"
+baseurl = "https://hellorv2.netlify.app/"
 languageCode = "en-us"
 theme = "hugo-theme-hello-friend"
 googleAnalytics = "UA-160603816-1"
